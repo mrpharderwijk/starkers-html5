@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying all pages.
+ * Template Name: One column, no sidebar
  *
  * @package WordPress
  * @subpackage Starkers
@@ -14,13 +14,9 @@ get_header(); ?>
 		<article <?php post_class() ?> id="post-<?php the_ID(); ?>">
 		
 			<header>
-				<?php if ( is_front_page() ) { ?>
-					<h2><?php the_title(); ?></h2>
-				<?php } else { ?>	
-					<h1><?php the_title(); ?></h1>
-				<?php } ?>
-			</header>				
-
+				<h1><?php the_title(); ?></h1>
+			</header>
+					
 				<?php the_content(); ?>
 						
 				<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'starkers' ), 'after' => '</nav>' ) ); ?>
@@ -35,5 +31,4 @@ get_header(); ?>
 
 <?php endwhile; ?>
 
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>

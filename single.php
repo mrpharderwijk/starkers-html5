@@ -1,61 +1,57 @@
 <?php
 /**
+ * The Template for displaying all single posts.
+ *
  * @package WordPress
- * @subpackage Starkers HTML5
+ * @subpackage Starkers
+ * @since Starkers HTML5 3.0
  */
 
 get_header(); ?>
 
-	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
-		<?php previous_post_link('&laquo; %link') ?> <?php next_post_link('%link &raquo;') ?>
-
-		<article <?php post_class() ?> id="post-<?php the_ID(); ?>">
+		<nav>
+			<?php previous_post_link( '%link', '' . _x( '&larr;', 'Previous post link', 'starkers' ) . ' %title' ); ?>
+			<?php next_post_link( '%link', '%title ' . _x( '&rarr;', 'Next post link', 'starkers' ) . '' ); ?>
+		</nav>
 		
-			<h2><?php the_title(); ?></h2>
+		<article <?php post_class() ?> id="post-<?php the_ID(); ?>">
 			
-			<?php the_content('<p>Read the rest of this entry &raquo;</p>'); ?>
-			<?php wp_link_pages(array('before' => '<p><strong>Pages:</strong> ', 'after' => '</p>', 'next_or_number' => 'number')); ?>
-			<?php the_tags( '<p>Tags: ', ', ', '</p>'); ?>
+			<header>
+				<h1><?php the_title(); ?></h1>
+
+				<?php starkers_posted_on(); ?>
+			</header>
+
+				<?php the_content(); ?>
+						
+				<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'starkers' ), 'after' => '</nav>' ) ); ?>
 			
-			<footer>	
-				This entry was posted
-				<?php /* This is commented, because it requires a little adjusting sometimes.
-				You'll need to download this plugin, and follow the instructions:
-				http://binarybonsai.com/wordpress/time-since/ */
-				/* $entry_datetime = abs(strtotime($post->post_date) - (60*120)); echo time_since($entry_datetime); echo ' ago'; */ ?>
-				on <time datetime="<?php the_time('Y-m-d') ?>" pubdate><?php the_time('l, F jS, Y') ?> at <?php the_time() ?></time>
-				and is filed under <?php the_category(', ') ?>.
-				You can follow any responses to this entry through the <?php post_comments_feed_link('RSS 2.0'); ?> feed.
+				<?php if ( get_the_author_meta( 'description' ) ) : // If a user has filled out their description, show a bio on their entries  ?>
+					<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'starkers_author_bio_avatar_size', 60 ) ); ?>
+					<h2><?php printf( esc_attr__( 'About %s', 'starkers' ), get_the_author() ); ?></h2>
+					<?php the_author_meta( 'description' ); ?>
+						<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">
+							<?php printf( __( 'View all posts by %s &rarr;', 'starkers' ), get_the_author() ); ?>
+						</a>
+				<?php endif; ?>
+				
+				<footer>
+					<?php starkers_posted_in(); ?>
+					<?php edit_post_link( __( 'Edit', 'starkers' ), '', '' ); ?>
+				</footer>
 
-				<?php if ( comments_open() && pings_open() ) {
-				// Both Comments and Pings are open ?>
-				You can <a href="#respond">leave a response</a>, or <a href="<?php trackback_url(); ?>" rel="trackback">trackback</a> from your own site.
+				<nav>
+					<?php previous_post_link( '%link', '' . _x( '&larr;', 'Previous post link', 'starkers' ) . ' %title' ); ?>
+					<?php next_post_link( '%link', '%title ' . _x( '&rarr;', 'Next post link', 'starkers' ) . '' ); ?>
+				</nav>
 
-				<?php } elseif ( !comments_open() && pings_open() ) {
-				// Only Pings are Open ?>
-				Responses are currently closed, but you can <a href="<?php trackback_url(); ?> " rel="trackback">trackback</a> from your own site.
-
-				<?php } elseif ( comments_open() && !pings_open() ) {
-				// Comments are open, Pings are not ?>
-				You can skip to the end and leave a response. Pinging is currently not allowed.
-
-				<?php } elseif ( !comments_open() && !pings_open() ) {
-				// Neither Comments, nor Pings are open ?>
-				Both comments and pings are currently closed.
-
-				<?php } edit_post_link('Edit this entry','','.'); ?>
-			
-			</footer>
-			
-			<?php comments_template(); ?>
-			
+				<?php comments_template( '', true ); ?>
+				
 		</article>
 
-	<?php endwhile; else: ?>
+<?php endwhile; // end of the loop. ?>
 
-		<p>Sorry, no posts matched your criteria.</p>
-
-<?php endif; ?>
-
+<?php get_sidebar(); ?>
 <?php get_footer(); ?>
