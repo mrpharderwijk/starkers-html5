@@ -1,27 +1,45 @@
 <?php
 /**
- * The main template file.
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query. 
- * E.g., it puts together the home page when no home.php file exists.
- * Learn more: http://codex.wordpress.org/Template_Hierarchy
- *
  * @package WordPress
- * @subpackage Starkers
- * @since Starkers 3.0
+ * @subpackage Starkers HTML5
  */
 
 get_header(); ?>
 
-			<?php
-			/* Run the loop to output the posts.
-			 * If you want to overload this in a child theme then include a file
-			 * called loop-index.php and that will be used instead.
-			 */
-			 get_template_part( 'loop', 'index' );
-			?>
+	<?php if (have_posts()) : ?>
+
+	<?php while (have_posts()) : the_post(); ?>
+	
+		<article <?php post_class() ?> id="post-<?php the_ID(); ?>">
+		
+			<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+			<time datetime="<?php the_time('Y-m-d') ?>" pubdate><?php the_time('F jS, Y') ?></time> <!-- by <?php the_author() ?> -->
+			
+			<?php the_content('Read the rest of this entry &raquo;'); ?>
+			
+			<footer><?php the_tags('Tags: ', ', ', '<br />'); ?> Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></footer>
+		
+		</article>
+
+	<?php endwhile; ?>
+	
+		<?php if (show_posts_nav()) : ?>
+		<nav>
+			<ul>
+				<li><?php next_posts_link('&laquo; Older Entries') ?></li>
+				<li><?php previous_posts_link('Newer Entries &raquo;') ?></li>
+			</ul>
+		</nav>
+		<?php endif; ?>
+
+	<?php else : ?>
+
+			<h2>Not Found</h2>
+			<p>Sorry, but you are looking for something that isn't here.</p>
+			<?php get_search_form(); ?>
+
+	<?php endif; ?>
 
 <?php get_sidebar(); ?>
+
 <?php get_footer(); ?>

@@ -4,28 +4,26 @@
  * @subpackage Starkers HTML5
  */
 
-get_header(); ?>
+get_header();
+?>
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-
-		<?php previous_post_link('&laquo; %link') ?> <?php next_post_link('%link &raquo;') ?>
-
+		
 		<article <?php post_class() ?> id="post-<?php the_ID(); ?>">
 		
-			<h2><?php the_title(); ?></h2>
+			<h2><a href="<?php echo get_permalink($post->post_parent); ?>" rev="attachment"><?php echo get_the_title($post->post_parent); ?></a> &raquo; <?php the_title(); ?></h2>
+			
+			<p><a href="<?php echo wp_get_attachment_url($post->ID); ?>"><?php echo wp_get_attachment_image( $post->ID, 'medium' ); ?></a></p>
+			<?php if ( !empty($post->post_excerpt) ) the_excerpt(); // this is the "caption" ?>
 			
 			<?php the_content('<p>Read the rest of this entry &raquo;</p>'); ?>
-			<?php wp_link_pages(array('before' => '<p><strong>Pages:</strong> ', 'after' => '</p>', 'next_or_number' => 'number')); ?>
-			<?php the_tags( '<p>Tags: ', ', ', '</p>'); ?>
 			
-			<footer>	
-				This entry was posted
-				<?php /* This is commented, because it requires a little adjusting sometimes.
-				You'll need to download this plugin, and follow the instructions:
-				http://binarybonsai.com/wordpress/time-since/ */
-				/* $entry_datetime = abs(strtotime($post->post_date) - (60*120)); echo time_since($entry_datetime); echo ' ago'; */ ?>
-				on <time datetime="<?php the_time('Y-m-d') ?>" pubdate><?php the_time('l, F jS, Y') ?> at <?php the_time() ?></time>
+			<?php next_image_link() ?> <?php previous_image_link() ?>
+
+			<footer>
+				This entry was posted on <time datetime="<?php the_time('Y-m-d') ?>" pubdate><?php the_time('l, F jS, Y') ?> at <?php the_time() ?></time>
 				and is filed under <?php the_category(', ') ?>.
+				<?php the_taxonomies(); ?>
 				You can follow any responses to this entry through the <?php post_comments_feed_link('RSS 2.0'); ?> feed.
 
 				<?php if ( comments_open() && pings_open() ) {
@@ -44,17 +42,16 @@ get_header(); ?>
 				// Neither Comments, nor Pings are open ?>
 				Both comments and pings are currently closed.
 
-				<?php } edit_post_link('Edit this entry','','.'); ?>
-			
+				<?php } edit_post_link('Edit this entry.'); ?>
 			</footer>
-			
-			<?php comments_template(); ?>
 			
 		</article>
 
+	<?php comments_template(); ?>
+
 	<?php endwhile; else: ?>
 
-		<p>Sorry, no posts matched your criteria.</p>
+		<p>Sorry, no attachments matched your criteria.</p>
 
 <?php endif; ?>
 
