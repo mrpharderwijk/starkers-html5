@@ -21,9 +21,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
-<!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+<script src="<?php bloginfo('template_directory'); ?>/js/modernizr-1.6.min.js"></script>
 
 <?php
 	/* We add some JavaScript to pages with the comment form
