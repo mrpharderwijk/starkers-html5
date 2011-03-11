@@ -29,8 +29,7 @@
  
     <?php if ( ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) || in_category( _x( 'gallery', 'gallery category slug', 'starkers' ) ) ) : ?>
      
-        <article <?php post_class() ?> id="post-<?php the_ID(); ?>">
-         
+        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
             <header>
                 <h2><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'starkers' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
  
@@ -40,36 +39,39 @@
 <?php if ( post_password_required() ) : ?>
                 <?php the_content(); ?>
 <?php else : ?>
-<?php
-    $images = get_children( array( 'post_parent' => $post->ID, 'post_type' => 'attachment', 'post_mime_type' => 'image', 'orderby' => 'menu_order', 'order' => 'ASC', 'numberposts' => 999 ) );
+<?php $images = get_children( array( 'post_parent' => $post->ID, 'post_type' => 'attachment', 'post_mime_type' => 'image', 'orderby' => 'menu_order', 'order' => 'ASC', 'numberposts' => 999 ) );
     if ( $images ) :
         $total_images = count( $images );
         $image = array_shift( $images );
-        $image_img_tag = wp_get_attachment_image( $image->ID, 'thumbnail' );
-?>
+        $image_img_tag = wp_get_attachment_image( $image->ID, 'thumbnail' ); ?>
+        
         <a href="<?php the_permalink(); ?>"><?php echo $image_img_tag; ?></a>
          
-        <p><?php printf( _n( 'This gallery contains <a %1$s>%2$s photo</a>.', 'This gallery contains <a %1$s>%2$s photos</a>.', $total_images, 'starkers' ),
-                'href="' . get_permalink() . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'starkers' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark"',
-                number_format_i18n( $total_images )
-            ); ?></p>
-<?php endif; ?>
+        <p><?php printf( _n( 'This gallery contains <a %1$s>%2$s photo</a>.', 'This gallery contains <a %1$s>%2$s photos</a>.', $total_images, 'starkers' ), 'href="' . get_permalink() . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'starkers' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark"', number_format_i18n( $total_images )); ?></p>
+
+	<?php endif; ?>
      
     <?php the_excerpt(); ?>
  
 <?php endif; ?>
  
             <footer>
-            <?php if ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) : ?> <a href="<?php echo get_post_format_link( 'gallery' ); ?>" title="<?php esc_attr_e( 'View Galleries', 'starkers' ); ?>"><?php _e( 'More Galleries', 'starkers' ); ?></a> | <?php elseif ( in_category( _x( 'gallery', 'gallery category slug', 'starkers' ) ) ) : ?> <a href="<?php echo get_term_link( _x( 'gallery', 'gallery category slug', 'starkers' ), 'category' ); ?>" title="<?php esc_attr_e( 'View posts in the Gallery category', 'starkers' ); ?>"><?php _e( 'More Galleries', 'twentyten' ); ?></a> | <?php comments_popup_link( __( 'Leave a comment', 'starkers' ), __( '1 Comment', 'starkers' ), __( '% Comments', 'starkers' ) ); ?> <?php edit_post_link( __( 'Edit', 'starkers' ), '| ', '' ); ?>
+	            <?php if ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) : ?>
+	            <a href="<?php echo get_post_format_link( 'gallery' ); ?>" title="<?php esc_attr_e( 'View Galleries', 'starkers' ); ?>"><?php _e( 'More Galleries', 'starkers' ); ?></a> | 
+	            
+	            <?php elseif ( in_category( _x( 'gallery', 'gallery category slug', 'starkers' ) ) ) : ?>
+	            <a href="<?php echo get_term_link( _x( 'gallery', 'gallery category slug', 'starkers' ), 'category' ); ?>" title="<?php esc_attr_e( 'View posts in the Gallery category', 'starkers' ); ?>"><?php _e( 'More Galleries', 'twentyten' ); ?></a> | 
+	            
+	            <?php comments_popup_link( __( 'Leave a comment', 'starkers' ), __( '1 Comment', 'starkers' ), __( '% Comments', 'starkers' ) ); ?>
+	            <?php edit_post_link( __( 'Edit', 'starkers' ), '| ', '' ); ?>
             </footer>
-             
         </article>
  
-<?php /* How to display posts in the asides category (only useful to you if you create a category named 'asides' in your site). */ ?>
- 
-    <?php elseif ( in_category( _x('asides', 'asides category slug', 'starkers') ) ) : ?>
+<?php /* How to display posts of the Aside format. The asides category is the old way. */ ?>
+    
+    <?php elseif ( ( function_exists( 'get_post_format' ) && 'aside' == get_post_format( $post->ID ) ) || in_category( _x( 'asides', 'asides category slug', 'starkers' ) )  ) : ?>
      
-        <article <?php post_class() ?> id="post-<?php the_ID(); ?>">
+        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
  
         <?php if ( is_archive() || is_search() ) : // Display excerpts for archives and search. ?>
                 <?php the_excerpt(); ?>
@@ -80,16 +82,15 @@
             <footer>
                 <?php starkers_posted_on(); ?> | <?php comments_popup_link( __( 'Leave a comment', 'starkers' ), __( '1 Comment', 'starkers' ), __( '% Comments', 'starkers' ) ); ?> <?php edit_post_link( __( 'Edit', 'starkers' ), '| ', '' ); ?>
             </footer>
-         
         </article>
  
 <?php /* How to display all other posts. */ ?>
  
     <?php else : ?>
      
-        <article <?php post_class() ?> id="post-<?php the_ID(); ?>">
+        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
          
-            <header>
+			<header>
                 <h2><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'starkers' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
  
                 <?php starkers_posted_on(); ?>
@@ -118,10 +119,9 @@
                 <?php edit_post_link( __( 'Edit', 'starkers' ), '| ', '' ); ?>
                  
             </footer>
+		</article>
  
             <?php comments_template( '', true ); ?>
-             
-        </article>
  
     <?php endif; // This was the if statement that broke the loop into three parts based on categories. ?>
  
