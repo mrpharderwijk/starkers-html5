@@ -96,12 +96,22 @@ function starkers_menu() {
 /**
  * Remove inline styles printed when the gallery shortcode is used.
  *
+ * @since Starkers HTML5 3.2
+ */
+add_filter( 'use_default_gallery_style', '__return_false' );
+
+/**
  * @since Starkers HTML5 3.0
+ * @deprecated in Starkers HTML5 3.2 for WordPress 3.1
+ *
+ * @return string The gallery style filter, with the styles themselves removed.
  */
 function starkers_remove_gallery_css( $css ) {
 	return preg_replace( "#<style type='text/css'>(.*?)</style>#s", '', $css );
 }
-add_filter( 'gallery_style', 'starkers_remove_gallery_css' );
+// Backwards compatibility with WordPress 3.0.
+if ( version_compare( $GLOBALS['wp_version'], '3.1', '<' ) )
+	add_filter( 'gallery_style', 'starkers_remove_gallery_css' );
 
 if ( ! function_exists( 'starkers_comment' ) ) :
 /**
@@ -253,11 +263,10 @@ add_action( 'widgets_init', 'starkers_widgets_init' );
 /**
  * Removes the default styles that are packaged with the Recent Comments widget.
  *
- * @since Starkers HTML5 3.0
+ * @updated Starkers HTML5 3.2
  */
 function starkers_remove_recent_comments_style() {
-	global $wp_widget_factory;
-	remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
+	add_filter( 'show_recent_comments_widget_style', '__return_false' );
 }
 add_action( 'widgets_init', 'starkers_remove_recent_comments_style' );
 
