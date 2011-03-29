@@ -18,6 +18,12 @@ if ( ! function_exists( 'starkers_setup' ) ):
  */
 function starkers_setup() {
 
+	// Post Format support. You can also use the legacy "gallery" or "asides" (note the plural) categories.
+	add_theme_support( 'post-formats', array( 'aside', 'gallery' ) );
+
+	// This theme uses post thumbnails
+	add_theme_support( 'post-thumbnails' );
+
 	// Add default posts and comments RSS feed links to head
 	add_theme_support( 'automatic-feed-links' );
 
