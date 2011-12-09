@@ -43,6 +43,7 @@ function starkers_setup() {
 }
 endif;
 
+if ( ! function_exists( 'starkers_menu' ) ):
 /**
  * Set our wp_nav_menu() fallback, starkers_menu().
  *
@@ -53,6 +54,7 @@ function starkers_menu() {
 	wp_list_pages('title_li=');
 	echo '</ul></nav>';
 }
+endif;
 
 /**
  * Remove inline styles printed when the gallery shortcode is used.
