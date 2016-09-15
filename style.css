@@ -1,12 +1,11 @@
 /*
-Theme Name: Starkers HTML5
-Theme URI: http://nathanstaines.com
-Description: An HTML5 version of <a href="http://elliotjaystocks.com/starkers/">Starkers</a> by <a href="http://elliotjaystocks.com/">Elliot Jay Stocks</a> which is based on Twenty Ten.
-Version: 3.2
-Author: Nathan Staines
-Author URI: http://nathanstaines.com
-Tags: starkers, html5, naked, clean, basic
+Theme Name: Hotelenroute
+Theme URI: http://hotelenroute.com
+Description: Hotelenroute let's you find hotels on route to your destination
+Version: 0.1
+Author: Marnix Harderwijk
+Author URI: http://marnixharderwijk.com
+Tags: travel, routeplanning, roadtripping
 */
 
-@import "css/reset.css";
-@import "css/layout.css";
+@import "assets/css/strapless/strapless.css";

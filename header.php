@@ -9,7 +9,7 @@
  * @since Starkers HTML5 3.0
  */
 ?><!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> ng-app="HotelEnroute">
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <title><?php
@@ -30,9 +30,11 @@
     ?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
+
+<link rel="stylesheet" href="<?php bloginfo( 'template_url' ); ?>/app/build/libs/bootstrap-slider.css">
+<link rel="stylesheet" href="<?php bloginfo( 'template_url' ); ?>/app/build/libs/font-awesome.css">
+<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_url' ); ?>/app/build/assets/css/strapless/strapless.css" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
- 
-<script src="<?php bloginfo('template_directory'); ?>/js/modernizr-1.6.min.js"></script>
  
 <?php
     /* We add some JavaScript to pages with the comment form
@@ -48,16 +50,40 @@
      */
     wp_head();
 ?>
+
+<script src="<?php bloginfo( 'template_url' ); ?>/app/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
  
-<body <?php body_class(); ?>>
+<body id="l-body" <?php body_class(); ?>>
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MW7XRM"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MW7XRM');</script>
  
-    <header>
-        <hgroup>
-            <h1><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-            <h2><?php bloginfo( 'description' ); ?></h2>
-        </hgroup>
- 
-        <?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to the 'starkers_menu' function which can be found in functions.php.  The menu assiged to the primary position is the one used.  If none is assigned, the menu with the lowest ID is used.  */ ?>
-        <?php wp_nav_menu( array( 'container' => 'nav', 'fallback_cb' => 'starkers_menu', 'theme_location' => 'primary' ) ); ?>
-    </header>
+  <header id="m-nav-main" class="<?php echo (is_home()) ? 'page-home' : ''; ?>">
+    <nav>
+      <a href="<?php bloginfo('url'); ?>" class="m-nav-branding">
+        <div class="branding-logo">
+          <i class="icon icon-map-marker large"></i>
+          <i class="icon icon-map-marker small"></i>
+        </div>
+        <span class="branding-text">Hotelenroute</span>
+      </a><!--// m-nav-branding -->
+
+      <?php
+        wp_nav_menu( array(
+          'menu'              => 'primary',
+          'theme_location'    => 'primary',
+          'container'         => '',
+          'depth'             => 2,
+          'menu_class'        => 'm-main-menu',
+          'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
+          'walker'            => new wp_bootstrap_navwalker())
+        );
+      ?>
+    </nav>
+  </header>

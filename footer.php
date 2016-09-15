@@ -8,23 +8,29 @@
  */
 ?>
 
-	<footer>
+<footer id="l-footer">
+  
+  <?php get_sidebar('footer'); ?>
 
-<?php
-	get_sidebar( 'footer' );
-?>
+	<a href="<?php echo home_url( '/' ) ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+		<?php bloginfo( 'name' ); ?>
+	</a>
 
-		<a href="<?php echo home_url( '/' ) ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
-			<?php bloginfo( 'name' ); ?>
-		</a>
+	<?php do_action( 'starkers_credits' ); ?>
 
-		<?php do_action( 'starkers_credits' ); ?>
-		
-		<a href="<?php echo esc_url( __('http://wordpress.org/', 'starkers') ); ?>" title="<?php esc_attr_e('Semantic Personal Publishing Platform', 'starkers'); ?>" rel="generator"> 
-			<?php printf( __('Proudly powered by %s.', 'starkers'), 'WordPress' ); ?>
-		</a>
+  
 
-	</footer>
+    <?php if ( is_active_sidebar( 'angular-widget-area' ) ) : ?>
+      <ul>
+        <?php dynamic_sidebar( 'angular-widget-area' ); ?>
+      </ul>
+    <?php endif; ?>
+	
+	<a href="<?php echo esc_url( __('http://wordpress.org/', 'starkers') ); ?>" title="<?php esc_attr_e('Semantic Personal Publishing Platform', 'starkers'); ?>" rel="generator"> 
+		<?php printf( __('Proudly powered by %s.', 'starkers'), 'WordPress' ); ?>
+	</a>
+
+</footer>
 
 <?php
 	/* Always have wp_footer() just before the closing </body>

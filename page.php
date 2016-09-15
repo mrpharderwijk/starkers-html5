@@ -9,7 +9,33 @@
 
 get_header(); ?>
 
-	<?php get_template_part( 'loop', 'page' ); ?>
+<section id="l-page" class="m-page-single">
 
-<?php get_sidebar(); ?>
+  <header id="featured-image" style="background-image: url(<?php the_post_thumbnail_url(); ?>);">
+    <div class="container">
+      <?php if ( is_front_page() ) { ?>
+        <h2><?php the_title(); ?></h2>
+      <?php } else { ?> 
+        <h1><?php the_title(); ?></h1>
+      <?php } ?>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      
+      <div class="col-sm-9">
+        <?php get_template_part( 'loop', 'page' ); ?>
+      </div>
+
+
+      <aside class="col-sm-3">
+        <?php get_sidebar(); ?>
+      </aside>
+
+    </div>
+  </div>
+
+</section>
+
 <?php get_footer(); ?>
